@@ -11,6 +11,8 @@ import { FeedModule } from './feed/feed.module';
 import { CommentsModule } from './comments/comments.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { MediaModule } from './media/media.module';
+import { RestaurantsModule } from './restaurants/restaurants.module';
+import { MenusModule } from './menus/menus.module';
 
 @Module({
   imports: [
@@ -53,7 +55,7 @@ import { MediaModule } from './media/media.module';
       username: process.env.DB_USERNAME || 'foodie_user',
       password: process.env.DB_PASSWORD || 'foodie_pass',
       database: process.env.DB_DATABASE || 'foodie_db',
-      entities: [__dirname + '/**/**/{users,follows,auth}.entity{.ts,.js}'],
+      entities: [__dirname + '/**/**/{users,follows,auth,restaurants}.entity{.ts,.js}'],
       synchronize: false,
       logging: process.env.NODE_ENV === 'development',
     }),
@@ -70,6 +72,8 @@ import { MediaModule } from './media/media.module';
     CommentsModule,
     NotificationsModule,
     MediaModule,
+    RestaurantsModule,
+    MenusModule,
   ],
   controllers: [],
   providers: [],
