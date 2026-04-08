@@ -2,98 +2,285 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Foodie Connect API
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Gastronomic Social Network API built with NestJS, featuring polyglot persistence architecture for optimal data storage.
 
-## Description
+## 🚀 Project Overview
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Foodie Connect is a social network for food enthusiasts where users can share their culinary experiences through posts, follow other foodies, and discover content from people they follow.
 
-## Project setup
+## 🛠 Tech Stack
 
-```bash
-$ yarn install
+### Core Framework
+- **NestJS** - Progressive Node.js framework
+- **TypeScript** - Type-safe development
+- **TypeORM** - ORM for PostgreSQL
+- **Mongoose** - ODM for MongoDB
+
+### Databases (Polyglot Persistence)
+- **PostgreSQL** - Relational data (users, follows, authentication)
+- **MongoDB** - Document data (posts with flexible schemas)
+- **Redis** - Caching layer for performance optimization
+
+### Security & Features
+- **JWT** - JSON Web Tokens for authentication
+- **bcrypt** - Password hashing (10 rounds)
+- **Class Validator** - Request validation
+- **Swagger** - API documentation
+
+### Development Tools
+- **Jest** - Testing framework
+- **ESLint** - Code linting with strict TypeScript rules
+- **Prettier** - Code formatting
+
+## 📋 Implemented Features
+
+### ✅ Phase 1: Authentication & Users
+- User registration and login
+- JWT-based authentication with automatic token rotation
+- Role-based access control (Admin, User)
+- Password hashing with bcrypt
+- Public and protected routes
+- Comprehensive user management
+
+### ✅ Phase 2: Documentation & Security
+- Swagger/OpenAPI documentation at `/api`
+- Comprehensive Spanish documentation (DOCS.md)
+- Environment variable security (.env.example)
+- ESLint configuration with strict type checking
+
+### ✅ Phase 3: Social Features
+- **Follows Module** (PostgreSQL)
+  - Follow/unfollow users
+  - Get followers and following lists
+  - Paginated results
+  - Prevention of self-follows and duplicates
+  - CASCADE delete for data integrity
+
+- **Posts Module** (MongoDB)
+  - Create posts with images, title, description, and location
+  - Get posts by user
+  - Delete own posts (ownership validation)
+  - Like/unlike posts
+  - Flexible document schema
+
+- **Feed Module** (Polyglot Persistence + Redis Cache)
+  - Get personalized feed from followed users
+  - Date range filtering
+  - Pagination support
+  - 5-minute Redis caching with automatic invalidation
+  - Cross-database queries (PostgreSQL for follows, MongoDB for posts)
+
+## 🏗 Architecture
+
+### Polyglot Persistence
+This project uses **polyglot persistence**, choosing the right database for each data type:
+
+- **PostgreSQL** for structured, relational data:
+  - User accounts and profiles
+  - Follow relationships (requires ACID guarantees)
+  - Authentication and authorization
+
+- **MongoDB** for flexible, document data:
+  - Posts (variable structure, nested fields)
+  - Content with arrays (images, tags)
+  - High write throughput for social features
+
+- **Redis** for performance:
+  - Feed caching (5-minute TTL)
+  - Session data (future)
+  - Rate limiting (future)
+
+### Database Schema
+
+**PostgreSQL Tables:**
+- `users` - User accounts with roles
+- `follows` - Social graph (follower_id, following_id)
+
+**MongoDB Collections:**
+- `posts` - User posts with images, likes, timestamps
+
+## 📚 API Documentation
+
+Once the server is running, visit:
+- **Swagger UI**: http://localhost:3000/api
+- **API JSON**: http://localhost:3000/api-json
+
+### Main Endpoints
+
+#### Authentication (`/auth`)
+- `POST /auth/register` - Register new user
+- `POST /auth/login` - User login
+- `POST /auth/rotate-secret` - Rotate JWT secret (admin only)
+- `GET /auth/profile` - Get current user profile
+
+#### Users (`/users`)
+- `GET /users` - List all users (admin)
+- `GET /users/:id` - Get user by ID
+- `PATCH /users/:id` - Update user (self or admin)
+- `DELETE /users/:id` - Soft delete user (admin)
+
+#### Follows (`/follows`)
+- `POST /follows/:userId` - Follow a user
+- `DELETE /follows/:userId` - Unfollow a user
+- `GET /follows/following` - Get following list (paginated)
+- `GET /follows/followers` - Get followers list (paginated)
+
+#### Posts (`/posts`)
+- `POST /posts` - Create a new post
+- `GET /posts/:id` - Get post by ID
+- `GET /posts/user/:userId` - Get posts by user
+- `DELETE /posts/:id` - Delete own post
+- `POST /posts/:id/like` - Like a post
+
+#### Feed (`/feed`)
+- `GET /feed` - Get personalized feed from followed users
+  - Query params: `page`, `limit`, `startDate`, `endDate`
+
+## 🔧 Configuration
+
+### Environment Variables
+Create a `.env` file based on `.env.example`:
+
+```env
+# Database
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=your_db_user
+POSTGRES_PASSWORD=your_secure_password_here
+POSTGRES_DB=foodie_connect
+
+# MongoDB
+MONGODB_URI=mongodb://localhost:27017/foodie_connect
+
+# JWT
+JWT_SECRET=your_jwt_secret_key_here
+JWT_EXPIRATION=7d
+
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+# Application
+PORT=3000
+NODE_ENV=development
 ```
 
-## Compile and run the project
+### Prerequisites
+- Node.js 18+
+- PostgreSQL 14+
+- MongoDB 6+
+- Redis 7+
+
+## 🚦 Getting Started
 
 ```bash
-# development
-$ yarn run start
+# Install dependencies
+npm install
 
-# watch mode
-$ yarn run start:dev
+# Run database migrations
+npm run migration:run
 
-# production mode
-$ yarn run start:prod
+# Start development server
+npm run start:dev
+
+# Run tests
+npm test
+
+# Run E2E tests
+npm run test:e2e
+
+# Build for production
+npm run build
 ```
 
-## Run tests
+## 🧪 Testing
+
+The project includes:
+- **Unit tests** for all services and controllers
+- **E2E tests** for API endpoints
+- **Test coverage** reporting
 
 ```bash
-# unit tests
-$ yarn run test
+# All tests
+npm test
 
-# e2e tests
-$ yarn run test:e2e
+# E2E tests
+npm run test:e2e
 
-# test coverage
-$ yarn run test:cov
+# Coverage
+npm run test:cov
 ```
 
-## Deployment
+## 📖 Documentation
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+For detailed NestJS concepts and project-specific documentation in Spanish, see **[DOCS.md](./DOCS.md)**.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Topics covered:
+- NestJS fundamentals (modules, controllers, services)
+- Dependency injection
+- TypeORM entities and migrations
+- Mongoose schemas
+- Guards and decorators
+- Custom decorators (@Roles, @Public)
+- Polyglot persistence patterns
+- Testing strategies
 
+## 🔒 Security Features
+
+- **Password Hashing**: bcrypt with 10 rounds
+- **JWT Authentication**: Secure token-based auth with rotation support
+- **Role-Based Access Control**: Admin and User roles
+- **Input Validation**: Class-validator DTOs
+- **SQL Injection Prevention**: TypeORM parameterized queries
+- **XSS Protection**: Input sanitization
+- **CORS**: Configured for frontend integration
+- **Rate Limiting**: Configured (Redis-based in production)
+
+## 📁 Project Structure
+
+```
+src/
+├── auth/              # Authentication module
+├── users/             # Users module (PostgreSQL)
+├── follows/           # Follows module (PostgreSQL)
+├── posts/             # Posts module (MongoDB)
+├── feed/              # Feed module (Polyglot + Redis)
+├── common/            # Shared utilities
+│   ├── cache/         # Redis cache service
+│   ├── guards/        # Auth & roles guards
+│   ├── decorators/    # Custom decorators
+│   └── types/         # TypeScript types
+├── migrations/        # TypeORM migrations
+└── main.ts           # Application entry point
+```
+
+## 🚀 Deployment
+
+### Production Build
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+npm run build
+npm run start:prod
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Environment Setup
+Ensure all environment variables are set in production:
+- Strong JWT_SECRET
+- Secure database passwords
+- Configured CORS origins
+- Production-ready Redis instance
 
-## Resources
+## 📝 License
 
-Check out a few resources that may come in handy when working with NestJS:
+This project is MIT licensed.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 👥 Authors
 
-## Support
+- **Aldray Narvaez** - Initial work
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 🙏 Acknowledgments
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
-# foodie-connect-api
+- NestJS Team for the amazing framework
+- TypeORM and Mongoose communities
+- Open source contributors
