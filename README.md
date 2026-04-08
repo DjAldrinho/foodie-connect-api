@@ -328,8 +328,6 @@ npm run test:cov
 
 ## 📖 Documentation
 
-For detailed NestJS concepts and project-specific documentation in Spanish, see **[DOCS.md](./DOCS.md)**.
-
 Topics covered:
 - NestJS fundamentals (modules, controllers, services)
 - Dependency injection
