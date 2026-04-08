@@ -102,31 +102,38 @@ cd foodie-connect-api
 yarn install
 ```
 
-3. **Start Docker containers**:
+3. **Configure environment variables**:
+```bash
+# Copy example file and update with your values
+cp .env.example .env
+# Edit .env with your actual credentials
+```
+
+4. **Start Docker containers**:
 ```bash
 docker-compose up -d
 ```
 
-4. **Wait for databases to be ready** (~10 seconds):
+5. **Wait for databases to be ready** (~10 seconds):
 ```bash
 # Check PostgreSQL is ready
 docker-compose logs postgres | grep "database system is ready"
 
-# Check MongoDB is ready  
+# Check MongoDB is ready
 docker-compose logs mongo | grep "waiting for connections on"
 ```
 
-5. **Run database migrations**:
+6. **Run database migrations**:
 ```bash
 yarn migration:run
 ```
 
-6. **Seed default roles**:
+7. **Seed default roles**:
 ```bash
 yarn seed
 ```
 
-7. **Start the application**:
+8. **Start the application**:
 ```bash
 # Development mode
 yarn start:dev
@@ -159,31 +166,28 @@ The API will be available at `http://localhost:3000`
 
 ## Environment Variables
 
-```env
-# Application
-PORT=3000
-NODE_ENV=development
+The application uses environment variables for configuration. Copy `.env.example` to `.env` and update with your values:
 
-# PostgreSQL
-DB_HOST=localhost
-DB_PORT=5433
-DB_USERNAME=foodie_user
-DB_PASSWORD=f00di3**
-DB_DATABASE=foodie_db
+```bash
+cp .env.example .env
+nano .env  # or your preferred editor
+```
+
+**Required variables** (see `.env.example` for complete list):
+
+```env
+# Database Credentials
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_secure_password
 
 # MongoDB
-MONGO_URI=mongodb://foodie_user:f00di3**@localhost:27017/foodie_db?authSource=admin
+MONGO_URI=mongodb://your_mongo_user:your_password@localhost:27017/foodie_db?authSource=admin
 
-# JWT
-JWT_SECRET=change-this-in-production
-
-# Redis
-REDIS_HOST=localhost
-REDIS_PORT=6379
-
-# CORS
-FRONTEND_URL=http://localhost:3001
+# JWT Secret (generate with: openssl rand -base64 32)
+JWT_SECRET=your-jwt-secret-key-minimum-32-characters-long
 ```
+
+**Note**: Never commit `.env` to version control. Use `.env.example` as a template with placeholder values.
 
 ## Database Schema
 
