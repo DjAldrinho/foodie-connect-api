@@ -80,23 +80,6 @@ services:
       mongo:
         condition: service_healthy
 
-  # Redis - Caching layer for feed and sessions
-  redis:
-    image: redis:7-alpine
-    container_name: foodie-redis
-    restart: unless-stopped
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
-    volumes:
-      - redis_data:/data
-    networks:
-      - foodie-network
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
 networks:
   foodie-network:
     driver: bridge
@@ -114,7 +97,4 @@ volumes:
     driver: local
   mongo_config:
     name: foodie_mongo_config
-    driver: local
-  redis_data:
-    name: foodie_redis_data
     driver: local
