@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { FollowsModule } from './follows/follows.module';
 import { PostsModule } from './posts/posts.module';
 import { FeedModule } from './feed/feed.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -50,7 +51,7 @@ import { FeedModule } from './feed/feed.module';
       username: process.env.DB_USERNAME || 'foodie_user',
       password: process.env.DB_PASSWORD || 'foodie_pass',
       database: process.env.DB_DATABASE || 'foodie_db',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/**/**/{users,follows,auth}.entity{.ts,.js}'],
       synchronize: false,
       logging: process.env.NODE_ENV === 'development',
     }),
@@ -64,6 +65,7 @@ import { FeedModule } from './feed/feed.module';
     FollowsModule,
     PostsModule,
     FeedModule,
+    CommentsModule,
   ],
   controllers: [],
   providers: [],
