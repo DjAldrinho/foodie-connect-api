@@ -51,7 +51,7 @@ import { CommentsModule } from './comments/comments.module';
       username: process.env.DB_USERNAME || 'foodie_user',
       password: process.env.DB_PASSWORD || 'foodie_pass',
       database: process.env.DB_DATABASE || 'foodie_db',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/**/**/{users,follows,auth}.entity{.ts,.js}'],
       synchronize: false,
       logging: process.env.NODE_ENV === 'development',
     }),
