@@ -3,12 +3,10 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
-  Index,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('follows')
-@Index(['follower_id', 'following_id'], { unique: true })
 export class Follow {
   @PrimaryGeneratedColumn('uuid')
   id: string;
