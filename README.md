@@ -29,6 +29,11 @@ Foodie Connect is a social network for food enthusiasts where users can share th
 - **Class Validator** - Request validation
 - **Swagger** - API documentation
 
+### Media & Storage
+- **Cloudinary** - Cloud storage and CDN for images
+- **Sharp** - High-performance image processing
+- **Multer** - Multipart form data handling
+
 ### Development Tools
 - **Jest** - Testing framework
 - **ESLint** - Code linting with strict TypeScript rules
@@ -90,6 +95,16 @@ Foodie Connect is a social network for food enthusiasts where users can share th
   - Mark as read / Mark all as read
   - Unread count tracking
   - Soft delete for notifications
+
+### ✅ Phase D: Media Upload Module
+- **Media Upload Module** (Cloudinary + Sharp)
+  - Image upload with automatic optimization
+  - Multiple size generation: thumbnail (200x200), medium (800x600), large (1920x1080)
+  - Automatic WebP conversion with quality optimization
+  - Cloudinary CDN delivery for fast loading
+  - File validation (jpeg, png, webp | max 10MB)
+  - Organized storage in folders: original/, thumbnails/, medium/, large/
+  - DELETE endpoint for image removal
 
 ## 🏗 Architecture
 
@@ -174,6 +189,12 @@ Once the server is running, visit:
 - `PATCH /notifications/read-all` - Mark all notifications as read
 - `DELETE /notifications/:id` - Delete notification
 
+#### Media (`/media`)
+- `POST /media/upload` - Upload image with automatic optimization
+  - Generates: thumbnail, medium, large sizes
+  - Returns: URLs for all sizes, metadata, publicId
+  - Supported formats: jpeg, png, webp (max 10MB)
+
 #### WebSocket Events
 - `joinNotifications` - Join user's notification room
 - `leaveNotifications` - Leave notification room
@@ -203,6 +224,11 @@ JWT_EXPIRATION=7d
 # Redis
 REDIS_HOST=localhost
 REDIS_PORT=6379
+
+# Cloudinary (Media Upload)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 
 # Application
 PORT=3000
@@ -292,6 +318,7 @@ src/
 ├── comments/          # Comments module (MongoDB)
 ├── notifications/     # Notifications module (MongoDB + WebSocket)
 │   └── gateways/      # WebSocket gateway
+├── media/             # Media upload module (Cloudinary + Sharp)
 ├── common/            # Shared utilities
 │   ├── cache/         # Redis cache service
 │   ├── guards/        # Auth & roles guards
