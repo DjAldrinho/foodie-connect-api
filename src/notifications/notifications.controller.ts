@@ -1,20 +1,18 @@
 import {
   Controller,
+  Delete,
   Get,
-  Post,
   Param,
   Patch,
-  Delete,
-  Body,
-  UseGuards,
-  Request,
   Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { NotificationsService } from './notifications.service';
-import { GetNotificationsDto } from './dto/get-notifications.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import type { AuthenticatedRequest } from '../common/types/request.types';
+import { GetNotificationsDto } from './dto/get-notifications.dto';
+import { NotificationsService } from './notifications.service';
 
 @ApiTags('notifications')
 @Controller('notifications')

@@ -1,25 +1,24 @@
 import {
   Controller,
-  Post,
   Delete,
   Get,
-  Body,
   Param,
-  UseGuards,
-  Request,
+  Post,
   Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
   ApiBearerAuth,
+  ApiOperation,
   ApiParam,
+  ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
-import { FollowsService } from './follows.service';
-import { FollowUserDto, GetFollowsQueryDto } from './dto/follow-user.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import type { AuthenticatedRequest } from '../common/types/request.types';
+import { GetFollowsQueryDto } from './dto/follow-user.dto';
+import { FollowsService } from './follows.service';
 
 @ApiTags('follows')
 @Controller('follow')

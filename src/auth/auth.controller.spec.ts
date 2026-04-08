@@ -1,9 +1,9 @@
+import { Reflector } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../common/guards/roles.guard';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { RolesGuard } from '../common/guards/roles.guard';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { Reflector } from '@nestjs/core';
 
 describe('AuthController', () => {
   let controller: AuthController;
