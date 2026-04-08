@@ -13,6 +13,7 @@ Foodie Connect API is a social network for gastronomy enthusiasts built with Nes
 ## Tech Stack
 
 - **Framework**: NestJS 11 + TypeScript 5.7
+- **API Documentation**: Swagger/OpenAPI 3.0
 - **Relational DB**: PostgreSQL 15 (TypeORM)
 - **Document DB**: MongoDB 6 (Mongoose)
 - **Caching**: Redis 7
@@ -56,6 +57,12 @@ src/
 - Custom decorators (@Roles, @IsImageUrl)
 - Cache service with Redis integration
 - Validation pipe for DTOs
+- **Swagger/OpenAPI Documentation**:
+  - Interactive API documentation at `/api`
+  - JWT bearer authentication configuration
+  - Request/response examples for all endpoints
+  - DTOs with ApiProperty decorators
+  - Admin-only route markers
 
 ### ✅ Phase 2: Authentication & Users
 - **Auth Module**:
@@ -144,6 +151,36 @@ yarn start:prod
 ```
 
 The API will be available at `http://localhost:3000`
+
+## 📖 API Documentation (Swagger UI)
+
+Interactive API documentation is available via Swagger UI at:
+
+```
+http://localhost:3000/api
+```
+
+### Features
+
+- **Interactive Testing**: Test all endpoints directly from the browser
+- **Authentication Setup**: Configure JWT bearer token for protected routes
+- **Request/Response Examples**: See example payloads and responses
+- **Schema Validation**: View DTOs and validation rules
+- **Admin Routes**: Clearly marked admin-only endpoints
+
+### Using Swagger UI with Authentication
+
+1. Open `http://localhost:3000/api` in your browser
+2. Click the **Authorize** button (lock icon)
+3. Enter your JWT token: `Bearer <your_access_token>`
+   - Get token from `/auth/login` endpoint first
+4. Click **Authorize** to apply the token
+5. Now you can test authenticated endpoints
+
+### Available Tags
+
+- **auth**: Authentication endpoints (register, login, rotate-secret)
+- **users**: User management endpoints (profile, update, delete)
 
 ## API Endpoints
 
@@ -247,6 +284,11 @@ yarn test:e2e
 yarn start:dev
 ```
 
+When the application starts:
+- **API**: http://localhost:3000
+- **Swagger UI**: http://localhost:3000/api
+- **Health Check**: curl http://localhost:3000
+
 ### Run migration
 ```bash
 yarn migration:generate -- -n migration_name
@@ -303,6 +345,7 @@ yarn build
 - [x] JWT authentication
 - [x] User management with RBAC
 - [x] Database migrations
+- [x] Swagger API documentation
 - [x] Unit and E2E tests
 
 ### 🚧 Phase 3: Social Features (Next)
