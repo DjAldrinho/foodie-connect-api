@@ -1,5 +1,10 @@
 import { Controller, Get, Query, UseGuards, Request } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { FeedService } from './feed.service';
 import { FeedQueryDto } from './dto/feed-query.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
@@ -13,7 +18,9 @@ export class FeedController {
   constructor(private feedService: FeedService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get personalized feed (posts from followed users)' })
+  @ApiOperation({
+    summary: 'Get personalized feed (posts from followed users)',
+  })
   @ApiResponse({ status: 200, description: 'Feed retrieved successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async getUserFeed(
