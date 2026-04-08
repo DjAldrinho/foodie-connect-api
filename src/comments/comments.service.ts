@@ -67,7 +67,7 @@ export class CommentsService {
 
     // Check time limit (5 minutes)
     const now = new Date();
-    const commentTime = comment.createdAt as Date;
+    const commentTime = comment.createdAt;
     const diffInMinutes = (now.getTime() - commentTime.getTime()) / 60000;
 
     if (diffInMinutes > 5) {
