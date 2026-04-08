@@ -106,6 +106,26 @@ Foodie Connect is a social network for food enthusiasts where users can share th
   - Organized storage in folders: original/, thumbnails/, medium/, large/
   - DELETE endpoint for image removal
 
+### ✅ Phase 4: Restaurant Profiles & Menu Management
+- **Restaurant Profiles Module** (PostgreSQL)
+  - Restaurant profiles separate from regular users
+  - Price range enum ($ to $$$$)
+  - Cuisine types (Italiana, Argentina, Parrilla, etc.)
+  - Address with geo-coordinates for maps
+  - Opening hours by day of week
+  - Amenities (WiFi, Parking, Delivery, AC, etc.)
+  - Photo gallery integration with Cloudinary
+  - Owner verification (admin approval)
+  - Active/inactive status (soft delete)
+  - Filters: cuisineType, priceRange, city, verified
+
+- **Menu Management Module** (MongoDB)
+  - Nested category structure (categories → items)
+  - Items with price, description, photos, allergens, tags
+  - Availability toggle per item
+  - Add/remove categories and items
+  - Integration with restaurant profiles
+
 ## 🏗 Architecture
 
 ### Polyglot Persistence
@@ -131,9 +151,13 @@ This project uses **polyglot persistence**, choosing the right database for each
 **PostgreSQL Tables:**
 - `users` - User accounts with roles
 - `follows` - Social graph (follower_id, following_id)
+- `restaurants` - Restaurant profiles (priceRange, cuisineType, address, hours, amenities, verified)
 
 **MongoDB Collections:**
 - `posts` - User posts with images, likes, timestamps
+- `comments` - Nested comments with parentCommentId, mentions, likes
+- `notifications` - Notification history with read status
+- `menus` - Menu structure with nested categories and items
 - `comments` - Nested comments with mentions and reactions
 - `notifications` - Notification history with read status
 
@@ -194,6 +218,29 @@ Once the server is running, visit:
   - Generates: thumbnail, medium, large sizes
   - Returns: URLs for all sizes, metadata, publicId
   - Supported formats: jpeg, png, webp (max 10MB)
+
+#### Restaurants (`/restaurants`)
+- `POST /restaurants` - Create restaurant profile
+- `GET /restaurants` - List all restaurants with filters
+  - Query params: `cuisineType`, `priceRange`, `city`, `verified`
+- `GET /restaurants/my-restaurant` - Get current user restaurant
+- `GET /restaurants/:id` - Get restaurant by ID
+- `PATCH /restaurants/:id` - Update restaurant information
+- `PATCH /restaurants/:id/verify` - Verify restaurant (admin only)
+- `PATCH /restaurants/:id/photos` - Add photo to gallery
+- `DELETE /restaurants/:id/photos/:photoUrl` - Remove photo from gallery
+- `PATCH /restaurants/:id/deactivate` - Deactivate restaurant (soft delete)
+- `PATCH /restaurants/:id/activate` - Activate restaurant
+
+#### Menus (`/menus`)
+- `POST /menus` - Create or update menu for restaurant
+- `GET /menus/restaurant/:restaurantId` - Get menu by restaurant
+- `PATCH /menus/:id` - Update menu
+- `POST /menus/:id/categories` - Add category to menu
+- `PATCH /menus/:id/categories/:categoryName` - Remove category
+- `POST /menus/:id/categories/:categoryName/items` - Add item to category
+- `PATCH /menus/:id/categories/:categoryName/items/:itemName` - Remove item
+- `PATCH /menus/:id/categories/:categoryName/items/:itemName/availability` - Toggle item availability
 
 #### WebSocket Events
 - `joinNotifications` - Join user's notification room
@@ -319,6 +366,8 @@ src/
 ├── notifications/     # Notifications module (MongoDB + WebSocket)
 │   └── gateways/      # WebSocket gateway
 ├── media/             # Media upload module (Cloudinary + Sharp)
+├── restaurants/       # Restaurant profiles module (PostgreSQL)
+├── menus/             # Menu management module (MongoDB)
 ├── common/            # Shared utilities
 │   ├── cache/         # Redis cache service
 │   ├── guards/        # Auth & roles guards
