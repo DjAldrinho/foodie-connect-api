@@ -8,7 +8,7 @@ module.exports = new DataSource({
   username: process.env.DB_USERNAME || 'foodie_user',
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE || 'foodie_db',
-  entities: ['src/**/*.entity.ts'],
+  entities: ['src/**/**/{users,follows,auth,restaurants}.entity{.ts,.js}'],
   migrations: ['src/migrations/*.ts'],
   cli: {
     migrationsDir: 'src/migrations',

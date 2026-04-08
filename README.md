@@ -158,8 +158,6 @@ This project uses **polyglot persistence**, choosing the right database for each
 - `comments` - Nested comments with parentCommentId, mentions, likes
 - `notifications` - Notification history with read status
 - `menus` - Menu structure with nested categories and items
-- `comments` - Nested comments with mentions and reactions
-- `notifications` - Notification history with read status
 
 ## 📚 API Documentation
 
