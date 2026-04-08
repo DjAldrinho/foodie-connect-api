@@ -10,6 +10,7 @@ import { PostsModule } from './posts/posts.module';
 import { FeedModule } from './feed/feed.module';
 import { CommentsModule } from './comments/comments.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { NotificationsModule } from './notifications/notifications.module';
     FeedModule,
     CommentsModule,
     NotificationsModule,
+    MediaModule,
   ],
   controllers: [],
   providers: [],
