@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { FollowsModule } from './follows/follows.module';
 import { PostsModule } from './posts/posts.module';
 import { FeedModule } from './feed/feed.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { FeedModule } from './feed/feed.module';
     FollowsModule,
     PostsModule,
     FeedModule,
+    CommentsModule,
   ],
   controllers: [],
   providers: [],
