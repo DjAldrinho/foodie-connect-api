@@ -13,6 +13,7 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/create-comment.dto';
+import type { AuthenticatedRequest } from '../common/types/request.types';
 
 @Controller('comments')
 @UseGuards(JwtAuthGuard)
@@ -23,7 +24,7 @@ export class CommentsController {
   async createComment(
     @Param('postId') postId: string,
     @Body() createCommentDto: CreateCommentDto,
-    @Request() req,
+    @Request() req: AuthenticatedRequest,
   ) {
     return this.commentsService.create(
       req.user.userId,
@@ -46,19 +47,25 @@ export class CommentsController {
   async updateComment(
     @Param('id') id: string,
     @Body() updateCommentDto: UpdateCommentDto,
-    @Request() req,
+    @Request() req: AuthenticatedRequest,
   ) {
     return this.commentsService.update(id, req.user.userId, updateCommentDto);
   }
 
   @Delete(':id')
-  async deleteComment(@Param('id') id: string, @Request() req) {
+  async deleteComment(
+    @Param('id') id: string,
+    @Request() req: AuthenticatedRequest,
+  ) {
     await this.commentsService.delete(id, req.user.userId);
     return { message: 'Comment deleted successfully' };
   }
 
   @Post(':id/like')
-  async likeComment(@Param('id') id: string, @Request() req) {
+  async likeComment(
+    @Param('id') id: string,
+    @Request() req: AuthenticatedRequest,
+  ) {
     return this.commentsService.like(id, req.user.userId);
   }
 }
