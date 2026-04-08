@@ -62,16 +62,15 @@ describe('FeedService', () => {
 
   describe('getUserFeed', () => {
     it('should return cached feed if available', async () => {
-      cacheService.get = jest.fn().mockResolvedValue(
-        JSON.stringify(mockPosts),
-      );
+      cacheService.get = jest.fn().mockResolvedValue(JSON.stringify(mockPosts));
 
-      const result = await service.getUserFeed('user-1', { page: 1, limit: 10 });
+      const result = await service.getUserFeed('user-1', {
+        page: 1,
+        limit: 10,
+      });
 
       expect(result).toEqual(mockPosts);
-      expect(cacheService.get).toHaveBeenCalledWith(
-        'feed:user:user-1:page:1',
-      );
+      expect(cacheService.get).toHaveBeenCalledWith('feed:user:user-1:page:1');
       expect(postsService.getPostsByUserIds).not.toHaveBeenCalled();
     });
 
@@ -79,7 +78,10 @@ describe('FeedService', () => {
       cacheService.get = jest.fn().mockResolvedValue(null);
       cacheService.set = jest.fn().mockResolvedValue(undefined);
 
-      const result = await service.getUserFeed('user-1', { page: 1, limit: 10 });
+      const result = await service.getUserFeed('user-1', {
+        page: 1,
+        limit: 10,
+      });
 
       expect(result).toEqual(mockPosts);
       expect(followsService.getFollowingIds).toHaveBeenCalledWith(

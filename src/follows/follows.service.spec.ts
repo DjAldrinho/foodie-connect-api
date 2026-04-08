@@ -95,10 +95,9 @@ describe('FollowsService', () => {
       ];
       const mockCount = 2;
 
-      repository.findAndCount = jest.fn().mockResolvedValue([
-        mockFollows,
-        mockCount,
-      ]);
+      repository.findAndCount = jest
+        .fn()
+        .mockResolvedValue([mockFollows, mockCount]);
 
       const result = await service.getFollowingIds('user-1', 1, 10);
 
@@ -123,10 +122,9 @@ describe('FollowsService', () => {
       ];
       const mockCount = 2;
 
-      repository.findAndCount = jest.fn().mockResolvedValue([
-        mockFollows,
-        mockCount,
-      ]);
+      repository.findAndCount = jest
+        .fn()
+        .mockResolvedValue([mockFollows, mockCount]);
 
       const result = await service.getFollowersIds('user-1', 1, 10);
 

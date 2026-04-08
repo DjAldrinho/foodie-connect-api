@@ -9,7 +9,13 @@ import {
   Request,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiParam,
+} from '@nestjs/swagger';
 import { FollowsService } from './follows.service';
 import { FollowUserDto, GetFollowsQueryDto } from './dto/follow-user.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
@@ -26,7 +32,10 @@ export class FollowsController {
   @ApiOperation({ summary: 'Follow a user' })
   @ApiParam({ name: 'userId', description: 'User ID to follow' })
   @ApiResponse({ status: 201, description: 'User followed successfully' })
-  @ApiResponse({ status: 400, description: 'Bad request (self-follow or already follows)' })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request (self-follow or already follows)',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async follow(
     @Param('userId') userId: string,

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Post } from './schemas/post.schema';
@@ -6,9 +10,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 
 @Injectable()
 export class PostsService {
-  constructor(
-    @InjectModel('Post') private postModel: Model<Post>,
-  ) {}
+  constructor(@InjectModel('Post') private postModel: Model<Post>) {}
 
   async findOne(postId: string): Promise<Post> {
     const post = await this.postModel.findById(postId).exec();

@@ -8,7 +8,13 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiParam,
+} from '@nestjs/swagger';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
@@ -51,7 +57,10 @@ export class PostsController {
 
   @Get('me')
   @ApiOperation({ summary: 'Get current user posts' })
-  @ApiResponse({ status: 200, description: 'Current user posts retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Current user posts retrieved successfully',
+  })
   async getMyPosts(@Request() req: AuthenticatedRequest) {
     return this.postsService.findByUserId(req.user.userId);
   }
@@ -63,10 +72,7 @@ export class PostsController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden - Not your post' })
   @ApiResponse({ status: 404, description: 'Post not found' })
-  async delete(
-    @Param('id') id: string,
-    @Request() req: AuthenticatedRequest,
-  ) {
+  async delete(@Param('id') id: string, @Request() req: AuthenticatedRequest) {
     return this.postsService.deleteOne(id, req.user.userId);
   }
 }

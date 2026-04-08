@@ -63,13 +63,20 @@ describe('PostsService', () => {
         location: 'New Location',
       };
 
-      const savedPost = { _id: 'post-123', userId: 'user-123', ...createPostDto, likesCount: 0 };
+      const savedPost = {
+        _id: 'post-123',
+        userId: 'user-123',
+        ...createPostDto,
+        likesCount: 0,
+      };
       const postInstance = {
         ...savedPost,
         save: jest.fn().mockResolvedValue(savedPost),
       };
 
-      const createSpy = jest.spyOn(postModel, 'create').mockResolvedValue(postInstance as any);
+      const createSpy = jest
+        .spyOn(postModel, 'create')
+        .mockResolvedValue(postInstance as any);
 
       const result = await service.create('user-123', createPostDto);
 
@@ -89,7 +96,9 @@ describe('PostsService', () => {
       const execMock = {
         exec: jest.fn().mockResolvedValue(mockPost),
       };
-      const findByIdSpy = jest.spyOn(postModel, 'findById').mockReturnValue(execMock as any);
+      const findByIdSpy = jest
+        .spyOn(postModel, 'findById')
+        .mockReturnValue(execMock as any);
 
       const result = await service.findOne('post-123');
 
@@ -103,7 +112,9 @@ describe('PostsService', () => {
       const execMock = {
         exec: jest.fn().mockResolvedValue(null),
       };
-      const findByIdSpy = jest.spyOn(postModel, 'findById').mockReturnValue(execMock as any);
+      const findByIdSpy = jest
+        .spyOn(postModel, 'findById')
+        .mockReturnValue(execMock as any);
 
       await expect(service.findOne('post-123')).rejects.toThrow(
         new NotFoundException('Post not found'),
@@ -121,7 +132,9 @@ describe('PostsService', () => {
       const sortMock = {
         sort: jest.fn().mockReturnValue(execMock),
       };
-      const findSpy = jest.spyOn(postModel, 'find').mockReturnValue(sortMock as any);
+      const findSpy = jest
+        .spyOn(postModel, 'find')
+        .mockReturnValue(sortMock as any);
 
       const result = await service.findByUserId('user-123');
 
@@ -145,8 +158,12 @@ describe('PostsService', () => {
         exec: jest.fn().mockResolvedValue(undefined),
       };
 
-      const findByIdSpy = jest.spyOn(postModel, 'findById').mockReturnValue(findExecMock as any);
-      const deleteSpy = jest.spyOn(postModel, 'findByIdAndDelete').mockReturnValue(deleteExecMock as any);
+      const findByIdSpy = jest
+        .spyOn(postModel, 'findById')
+        .mockReturnValue(findExecMock as any);
+      const deleteSpy = jest
+        .spyOn(postModel, 'findByIdAndDelete')
+        .mockReturnValue(deleteExecMock as any);
 
       await service.deleteOne('post-123', 'user-123');
 
@@ -171,11 +188,13 @@ describe('PostsService', () => {
         exec: jest.fn().mockResolvedValue(otherUserPost),
       };
 
-      const findByIdSpy = jest.spyOn(postModel, 'findById').mockReturnValue(findExecMock as any);
+      const findByIdSpy = jest
+        .spyOn(postModel, 'findById')
+        .mockReturnValue(findExecMock as any);
 
-      await expect(
-        service.deleteOne('post-123', 'user-123'),
-      ).rejects.toThrow(new ForbiddenException('You can only delete your own posts'));
+      await expect(service.deleteOne('post-123', 'user-123')).rejects.toThrow(
+        new ForbiddenException('You can only delete your own posts'),
+      );
 
       findByIdSpy.mockRestore();
     });
@@ -189,7 +208,9 @@ describe('PostsService', () => {
       const sortMock = {
         sort: jest.fn().mockReturnValue(execMock),
       };
-      const findSpy = jest.spyOn(postModel, 'find').mockReturnValue(sortMock as any);
+      const findSpy = jest
+        .spyOn(postModel, 'find')
+        .mockReturnValue(sortMock as any);
 
       const result = await service.getPostsByUserIds(['user-1', 'user-2']);
 
@@ -213,7 +234,9 @@ describe('PostsService', () => {
         exec: jest.fn().mockResolvedValue(postWithSave),
       };
 
-      const findByIdSpy = jest.spyOn(postModel, 'findById').mockReturnValue(findExecMock as any);
+      const findByIdSpy = jest
+        .spyOn(postModel, 'findById')
+        .mockReturnValue(findExecMock as any);
 
       const result = await service.incrementLikes('post-123');
 

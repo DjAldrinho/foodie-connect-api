@@ -1,4 +1,11 @@
-import { IsString, IsNotEmpty, IsOptional, IsArray, ArrayNotEmpty, IsUrl } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsArray,
+  ArrayNotEmpty,
+  IsUrl,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePostDto {
@@ -21,7 +28,10 @@ export class CreatePostDto {
 
   @ApiProperty({
     description: 'Array of image URLs',
-    example: ['https://example.com/pizza1.jpg', 'https://example.com/pizza2.jpg'],
+    example: [
+      'https://example.com/pizza1.jpg',
+      'https://example.com/pizza2.jpg',
+    ],
     required: false,
   })
   @IsArray()
@@ -32,7 +42,7 @@ export class CreatePostDto {
 
   @ApiProperty({
     description: 'Restaurant or location name',
-    example: 'Luigi\'s Restaurant',
+    example: "Luigi's Restaurant",
     required: false,
   })
   @IsString()

@@ -1,4 +1,10 @@
-import { IsString, IsOptional, IsDateString, IsInt, Min } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsDateString,
+  IsInt,
+  Min,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class FeedQueryDto {
