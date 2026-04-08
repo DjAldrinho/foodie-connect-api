@@ -1,99 +1,327 @@
+# Foodie Connect API
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<p align="center">Gastronomic Social Network API with Polyglot Persistence</p>
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Foodie Connect API is a social network for gastronomy enthusiasts built with NestJS, featuring polyglot persistence (PostgreSQL + MongoDB), JWT authentication, role-based access control, and Redis caching.
 
-## Project setup
+## Tech Stack
 
-```bash
-$ yarn install
+- **Framework**: NestJS 11 + TypeScript 5.7
+- **Relational DB**: PostgreSQL 15 (TypeORM)
+- **Document DB**: MongoDB 6 (Mongoose)
+- **Caching**: Redis 7
+- **Authentication**: JWT (Passport-JWT) + bcrypt
+- **Validation**: class-validator + class-transformer
+- **Testing**: Jest + Supertest
+
+## Project Structure
+
+```
+src/
+├── auth/              # JWT authentication module
+│   ├── dto/           # Login, Register, RotateSecret DTOs
+│   ├── entities/      # Secret entity (JWT rotation)
+│   ├── strategies/    # JWT Passport strategy
+│   ├── auth.controller.ts
+│   ├── auth.service.ts
+│   └── auth.module.ts
+├── users/            # User management module
+│   ├── dto/           # UpdateUserDto
+│   ├── entities/      # User, Role entities
+│   ├── users.controller.ts
+│   ├── users.service.ts
+│   └── users.module.ts
+├── common/           # Shared utilities
+│   ├── cache/        # Redis cache service
+│   ├── decorators/   # @Roles, @IsImageUrl
+│   ├── guards/        # JwtAuthGuard, RolesGuard
+│   ├── pipes/         # ValidationPipe
+│   └── types/        # Request types
+├── config/           # Configuration module
+└── migrations/       # TypeORM database migrations
 ```
 
-## Compile and run the project
+## Implemented Features (Phase 1 & 2)
 
+### ✅ Phase 1: Foundation & Infrastructure
+- Docker Compose with PostgreSQL, MongoDB, Redis, pgAdmin, Mongo-Express
+- Environment configuration with validation
+- Guards (JwtAuthGuard, RolesGuard) with role hierarchy
+- Custom decorators (@Roles, @IsImageUrl)
+- Cache service with Redis integration
+- Validation pipe for DTOs
+
+### ✅ Phase 2: Authentication & Users
+- **Auth Module**:
+  - User registration with email uniqueness check
+  - JWT authentication with bcrypt (10 rounds)
+  - JWT rotation support for production scenarios
+  - Multi-secret validation from database
+  
+- **Users Module**:
+  - CRUD operations with soft delete
+  - Role-based access control (ADMIN, USER, RESTAURANT)
+  - Profile management (bio, profile_picture_url)
+  - Public profile filtering (excludes password_hash)
+  - Admin routes for user management
+
+- **Database**:
+  - TypeORM migrations for schema versioning
+  - Seed script for default roles
+  - Foreign keys and constraints
+
+- **Testing**:
+  - 29 unit tests (auth, users, guards, config)
+  - 16 E2E tests covering auth flows and RBAC
+  - 100% tests passing (38/38)
+
+## Setup Instructions
+
+### Prerequisites
+
+- Docker and Docker Compose
+- Node.js 20+ and Yarn
+- Git
+
+### Installation
+
+1. **Clone the repository**:
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+git clone git@personal:DjAldrinho/foodie-connect-api.git
+cd foodie-connect-api
 ```
 
-## Run tests
-
+2. **Install dependencies**:
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+yarn install
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+3. **Start Docker containers**:
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+docker-compose up -d
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+4. **Wait for databases to be ready** (~10 seconds):
+```bash
+# Check PostgreSQL is ready
+docker-compose logs postgres | grep "database system is ready"
 
-## Resources
+# Check MongoDB is ready  
+docker-compose logs mongo | grep "waiting for connections on"
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+5. **Run database migrations**:
+```bash
+yarn migration:run
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+6. **Seed default roles**:
+```bash
+yarn seed
+```
 
-## Support
+7. **Start the application**:
+```bash
+# Development mode
+yarn start:dev
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Production build
+yarn build
+yarn start:prod
+```
 
-## Stay in touch
+The API will be available at `http://localhost:3000`
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## API Endpoints
+
+### Authentication
+
+| Method | Endpoint | Description | Auth |
+|---------|----------|-------------|------|
+| POST | `/auth/register` | Register new user | Public |
+| POST | `/auth/login` | Login and get JWT | Public |
+| POST | `/auth/rotate-secret` | Rotate JWT secret (admin only) | Admin |
+
+### Users
+
+| Method | Endpoint | Description | Auth |
+|---------|----------|-------------|------|
+| GET | `/users/me` | Get current user profile | JWT |
+| PATCH | `/users/me` | Update profile (bio, picture) | JWT |
+| DELETE | `/users/me` | Soft delete account | JWT |
+| GET | `/users/:id` | Get any user profile | Admin |
+
+## Environment Variables
+
+```env
+# Application
+PORT=3000
+NODE_ENV=development
+
+# PostgreSQL
+DB_HOST=localhost
+DB_PORT=5433
+DB_USERNAME=foodie_user
+DB_PASSWORD=f00di3**
+DB_DATABASE=foodie_db
+
+# MongoDB
+MONGO_URI=mongodb://foodie_user:f00di3**@localhost:27017/foodie_db?authSource=admin
+
+# JWT
+JWT_SECRET=change-this-in-production
+
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+# CORS
+FRONTEND_URL=http://localhost:3001
+```
+
+## Database Schema
+
+### PostgreSQL (TypeORM)
+
+**roles** table:
+- id (UUID, PK)
+- name (enum: USER, RESTAURANT, ADMIN)
+
+**users** table:
+- id (UUID, PK)
+- email (string, unique)
+- password_hash (string)
+- full_name (string)
+- bio (text, nullable)
+- profile_picture_url (string, nullable)
+- role_id (UUID, FK → roles.id)
+- created_at (timestamp)
+- updated_at (timestamp)
+- deleted_at (timestamp, nullable)
+
+**jwt_secrets** table:
+- id (UUID, PK)
+- secret (string)
+- version (integer)
+- active (boolean)
+- expires_at (timestamp)
+
+### MongoDB (Mongoose)
+
+Pending implementation in Phase 3:
+- Posts (food posts with images, location, likes)
+- Comments (post reactions)
+- Follows (social graph)
+
+## Testing
+
+### Unit Tests
+```bash
+yarn test
+```
+
+### E2E Tests
+```bash
+yarn test:e2e
+```
+
+### Test Coverage
+- Unit tests: 29 tests
+- E2E tests: 16 tests
+- Total: 38 tests (100% passing)
+
+## Development
+
+### Run in development mode
+```bash
+yarn start:dev
+```
+
+### Run migration
+```bash
+yarn migration:generate -- -n migration_name
+yarn migration:run
+yarn migration:revert
+```
+
+### Run seed
+```bash
+yarn seed
+```
+
+### Code Quality
+```bash
+# Lint
+yarn eslint
+
+# Format
+yarn prettier --write .
+
+# Build
+yarn build
+```
+
+## Git Workflow
+
+### Current Branch Structure
+
+- **feat/phase-1-2-auth-users**: Auth and Users modules (✅ Complete)
+- **feat/phase-3-social**: Social features (🚀 In Progress)
+
+### Why No PR to Main?
+
+**Currently**, there are no branches in `main` to PR against. This repository uses a feature branch workflow where each phase has its own branch:
+
+1. `feat/phase-1-2-auth-users` → Contains all auth and user work
+2. `feat/phase-3-social` → Will contain social features
+3. `main` → Will be the integration branch later
+
+**How to merge** (when ready):
+1. Create a PR from `feat/phase-1-2-auth-users` to `main`
+2. Request review if working in a team
+3. Merge after approval
+4. Delete merged branch
+
+**Current Status**: Feature branches are pushed to GitHub and ready for review whenever you decide to integrate them into main.
+
+## Roadmap
+
+### ✅ Phase 1 & 2: Foundation, Auth & Users
+- [x] Infrastructure setup
+- [x] Configuration and environment
+- [x] Guards, decorators, and common utilities
+- [x] JWT authentication
+- [x] User management with RBAC
+- [x] Database migrations
+- [x] Unit and E2E tests
+
+### 🚧 Phase 3: Social Features (Next)
+- [ ] Follow system (PostgreSQL)
+- [ ] Posts with images (MongoDB)
+- [ ] Comments and likes
+- [ ] Feed aggregation with Redis cache
+
+### 📋 Future Phases
+- [ ] Phase 4: Restaurant profiles
+- [ ] Phase 5: Reviews and ratings
+- [ ] Phase 6: Recommendations algorithm
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
-# foodie-connect-api
+MIT
+
+## Author
+
+**Aldray Narvaez** - [GitHub](https://github.com/DjAldrinho)
+
+---
+
+<p align="center">
+  <i>Built with ❤️ for food lovers everywhere</i>
+</p>
