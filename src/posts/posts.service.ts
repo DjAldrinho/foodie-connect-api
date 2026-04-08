@@ -18,6 +18,15 @@ export class PostsService {
     return post;
   }
 
+  async create(userId: string, createPostDto: CreatePostDto): Promise<Post> {
+    const newPost = await this.postModel.create({
+      userId,
+      ...createPostDto,
+      likesCount: 0,
+    });
+    return newPost.save();
+  }
+
   async findByUserId(userId: string): Promise<Post[]> {
     return this.postModel.find({ userId }).sort({ createdAt: -1 }).exec();
   }

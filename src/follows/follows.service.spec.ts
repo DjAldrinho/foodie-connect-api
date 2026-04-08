@@ -7,7 +7,7 @@ import { NotFoundException, BadRequestException } from '@nestjs/common';
 
 describe('FollowsService', () => {
   let service: FollowsService;
-  let repository: Repository<Follow>;
+  let repository: any;
 
   const mockFollow = {
     id: 'follow-123',
@@ -33,7 +33,7 @@ describe('FollowsService', () => {
     }).compile();
 
     service = module.get<FollowsService>(FollowsService);
-    repository = module.get<Repository<Follow>(getRepositoryToken(Follow));
+    repository = module.get<any>(getRepositoryToken(Follow));
   });
 
   it('should be defined', () => {

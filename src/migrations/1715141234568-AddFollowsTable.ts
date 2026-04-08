@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, Index, ForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from 'typeorm';
 
 export class AddFollowsTable1715141234568 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -33,24 +33,28 @@ export class AddFollowsTable1715141234568 implements MigrationInterface {
     // Foreign keys
     await queryRunner.createForeignKey(
       'follows',
-      'follower_id',
-      'users',
-      'id',
-      { onDelete: 'CASCADE' },
+      new TableForeignKey({
+        columnNames: ['follower_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+        onDelete: 'CASCADE',
+      }),
     );
 
     await queryRunner.createForeignKey(
       'follows',
-      'following_id',
-      'users',
-      'id',
-      { onDelete: 'CASCADE' },
+      new TableForeignKey({
+        columnNames: ['following_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+        onDelete: 'CASCADE',
+      }),
     );
 
     // Unique constraint on (follower_id, following_id)
     await queryRunner.createIndex(
       'follows',
-      new Table({
+      new TableIndex({
         name: 'unique_follow',
         columnNames: ['follower_id', 'following_id'],
         isUnique: true,
@@ -60,7 +64,7 @@ export class AddFollowsTable1715141234568 implements MigrationInterface {
     // Index for faster queries
     await queryRunner.createIndex(
       'follows',
-      new Table({
+      new TableIndex({
         name: 'idx_follower_id',
         columnNames: ['follower_id'],
       }),
@@ -68,7 +72,7 @@ export class AddFollowsTable1715141234568 implements MigrationInterface {
 
     await queryRunner.createIndex(
       'follows',
-      new Table({
+      new TableIndex({
         name: 'idx_following_id',
         columnNames: ['following_id'],
       }),

@@ -13,13 +13,13 @@ export class FeedService {
   ) {}
 
   async getUserFeed(userId: string, query: FeedQueryDto) {
-    const { page, limit, startDate, endDate } = query;
+    const { page = 1, limit = 10, startDate, endDate } = query;
     const cacheKey = `feed:user:${userId}:page:${page}`;
 
     // Try cache first
-    const cached = await this.cacheService.get(cacheKey);
+    const cached = await this.cacheService.get<string>(cacheKey);
     if (cached) {
-      return JSON.parse(cached);
+      return JSON.parse(cached) as any[];
     }
 
     // Get following IDs

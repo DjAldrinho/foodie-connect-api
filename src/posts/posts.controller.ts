@@ -28,7 +28,7 @@ export class PostsController {
   async create(
     @Body() createPostDto: CreatePostDto,
     @Request() req: AuthenticatedRequest,
-  ) {
+  ): Promise<any> {
     return this.postsService.create(req.user.userId, createPostDto);
   }
 
