@@ -13,7 +13,7 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/create-comment.dto';
-import { AuthenticatedRequest } from '../common/types/request.types';
+import type { AuthenticatedRequest } from '../common/types/request.types';
 
 @Controller('comments')
 @UseGuards(JwtAuthGuard)

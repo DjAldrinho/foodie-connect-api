@@ -14,7 +14,7 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { NotificationsService } from './notifications.service';
 import { GetNotificationsDto } from './dto/get-notifications.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { AuthenticatedRequest } from '../common/types/request.types';
+import type { AuthenticatedRequest } from '../common/types/request.types';
 
 @ApiTags('notifications')
 @Controller('notifications')
