@@ -121,8 +121,8 @@ export class CommentsService {
 
   private extractMentions(content: string): string[] {
     const mentionRegex = /@(\w+)/g;
-    const matches = [];
-    let match;
+    const matches: string[] = [];
+    let match: RegExpExecArray | null;
     while ((match = mentionRegex.exec(content)) !== null) {
       matches.push(match[0]);
     }
