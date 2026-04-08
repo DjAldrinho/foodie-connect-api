@@ -142,9 +142,9 @@ describe('NotificationsService', () => {
           exec: jest.fn().mockResolvedValue(null),
         } as any);
 
-      await expect(
-        service.markAsRead('notif-123', 'user-123'),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.markAsRead('notif-123', 'user-123')).rejects.toThrow(
+        NotFoundException,
+      );
 
       findByIdSpy.mockRestore();
     });
