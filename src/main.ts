@@ -6,6 +6,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // WebSocket Gateway will be initialized by NestJS automatically
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
