@@ -1,0 +1,120 @@
+version: '3.8'
+
+services:
+  # PostgreSQL - Base de datos relacional
+  postgres:
+    image: postgres:15-alpine
+    container_name: foodie-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-foodie_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-foodie_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-foodie_db}
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - foodie-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-foodie_user} -d ${POSTGRES_DB:-foodie_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # pgAdmin - Interfaz gráfica para PostgreSQL
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: foodie-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@foodie.dev}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin123}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "${PGADMIN_PORT:-5051}:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./config/pgadmin/servers.json:/pgadmin4/servers.json:ro
+    networks:
+      - foodie-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # MongoDB - Base de datos NoSQL
+  mongo:
+    image: mongo:6
+    container_name: foodie-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-foodie_user}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-f00di3**}
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+    networks:
+      - foodie-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Mongo-Express - Interfaz gráfica para MongoDB
+  mongo-express:
+    image: mongo-express:latest
+    container_name: foodie-mongo-express
+    restart: unless-stopped
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_USER:-foodie_user}:${MONGO_PASSWORD:-f00di3**}@mongo:27017/?authSource=admin
+      ME_CONFIG_BASICAUTH_USERNAME: ${ME_USER:-admin}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${ME_PASSWORD:-admin123}
+    ports:
+      - "${ME_PORT:-8081}:8081"
+    networks:
+      - foodie-network
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  # Redis - Caching layer for feed and sessions
+  redis:
+    image: redis:7-alpine
+    container_name: foodie-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - foodie-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  foodie-network:
+    driver: bridge
+    name: foodie-network
+
+volumes:
+  postgres_data:
+    name: foodie_postgres_data
+    driver: local
+  pgadmin_data:
+    name: foodie_pgadmin_data
+    driver: local
+  mongo_data:
+    name: foodie_mongo_data
+    driver: local
+  mongo_config:
+    name: foodie_mongo_config
+    driver: local
+  redis_data:
+    name: foodie_redis_data
+    driver: local

@@ -1,0 +1,13 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5433,
+  "username": "foodie_user",
+  "password": "foodie_pass",
+  "database": "foodie_db",
+  "entities": ["src/**/*.entity.ts"],
+  "migrations": ["src/migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "src/migrations"
+  }
+}
