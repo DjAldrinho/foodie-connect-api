@@ -9,6 +9,7 @@ import { FollowsModule } from './follows/follows.module';
 import { PostsModule } from './posts/posts.module';
 import { FeedModule } from './feed/feed.module';
 import { CommentsModule } from './comments/comments.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { CommentsModule } from './comments/comments.module';
     PostsModule,
     FeedModule,
     CommentsModule,
+    NotificationsModule,
   ],
   controllers: [],
   providers: [],
