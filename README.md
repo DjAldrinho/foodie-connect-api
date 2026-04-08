@@ -72,6 +72,25 @@ Foodie Connect is a social network for food enthusiasts where users can share th
   - 5-minute Redis caching with automatic invalidation
   - Cross-database queries (PostgreSQL for follows, MongoDB for posts)
 
+### ✅ Phase A: Comments Module
+- **Comments Module** (MongoDB)
+  - Nested comments with parentCommentId for thread-style replies
+  - Like/unlike comments with array-based reactions
+  - Edit comments within 5-minute window with ownership validation
+  - Soft delete for content preservation
+  - User mentions with @username pattern extraction
+  - Pagination and filtering by post
+
+### ✅ Phase B: Notifications Module
+- **Notifications Module** (MongoDB + WebSocket)
+  - Real-time notification delivery with Socket.io
+  - Notification types: FOLLOW, LIKE, COMMENT, COMMENT_REPLY, POST
+  - Room-based WebSocket (notifications:userId)
+  - REST endpoints for notification management
+  - Mark as read / Mark all as read
+  - Unread count tracking
+  - Soft delete for notifications
+
 ## 🏗 Architecture
 
 ### Polyglot Persistence
@@ -100,6 +119,8 @@ This project uses **polyglot persistence**, choosing the right database for each
 
 **MongoDB Collections:**
 - `posts` - User posts with images, likes, timestamps
+- `comments` - Nested comments with mentions and reactions
+- `notifications` - Notification history with read status
 
 ## 📚 API Documentation
 
@@ -137,6 +158,27 @@ Once the server is running, visit:
 #### Feed (`/feed`)
 - `GET /feed` - Get personalized feed from followed users
   - Query params: `page`, `limit`, `startDate`, `endDate`
+
+#### Comments (`/comments`)
+- `POST /comments` - Create a new comment
+- `GET /comments/post/:postId` - Get comments for a post (paginated)
+- `PATCH /comments/:id` - Edit own comment (within 5 minutes)
+- `DELETE /comments/:id` - Soft delete own comment
+- `POST /comments/:id/like` - Like/unlike a comment
+- `GET /comments/:id/replies` - Get replies to a comment (nested)
+
+#### Notifications (`/notifications`)
+- `GET /notifications` - Get user notifications (paginated)
+- `GET /notifications/unread-count` - Get unread notifications count
+- `PATCH /notifications/:id/read` - Mark notification as read
+- `PATCH /notifications/read-all` - Mark all notifications as read
+- `DELETE /notifications/:id` - Delete notification
+
+#### WebSocket Events
+- `joinNotifications` - Join user's notification room
+- `leaveNotifications` - Leave notification room
+- `markAsRead` - Mark notification as read via WebSocket
+- Real-time updates: `notification-updated`, `unread-count`
 
 ## 🔧 Configuration
 
@@ -247,6 +289,9 @@ src/
 ├── follows/           # Follows module (PostgreSQL)
 ├── posts/             # Posts module (MongoDB)
 ├── feed/              # Feed module (Polyglot + Redis)
+├── comments/          # Comments module (MongoDB)
+├── notifications/     # Notifications module (MongoDB + WebSocket)
+│   └── gateways/      # WebSocket gateway
 ├── common/            # Shared utilities
 │   ├── cache/         # Redis cache service
 │   ├── guards/        # Auth & roles guards
