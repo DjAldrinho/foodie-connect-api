@@ -39,6 +39,8 @@ Foodie Connect is a social network for food enthusiasts where users can share th
 - **Jest** - Testing framework
 - **ESLint** - Code linting with strict TypeScript rules
 - **Prettier** - Code formatting
+- **Yarn** - Package manager
+- **Docker Compose** - Infrastructure orchestration
 
 ## 📋 Implemented Features
 
@@ -285,19 +287,27 @@ Once the server is running, visit:
 Create a `.env` file based on `.env.example`:
 
 ```env
-# Database
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-POSTGRES_USER=your_db_user
-POSTGRES_PASSWORD=your_secure_password_here
-POSTGRES_DB=foodie_connect
+# Application
+PORT=3000
+NODE_ENV=development
 
-# MongoDB
-MONGODB_URI=mongodb://localhost:27017/foodie_connect
+# PostgreSQL (TypeORM)
+DB_HOST=localhost
+DB_PORT=5433
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_secure_password_here
+DB_DATABASE=foodie_db
+DB_SYNCHRONIZE=false
+DB_LOGGING=true
+
+# MongoDB (Mongoose)
+MONGO_USER=your_mongo_user
+MONGO_PASSWORD=your_mongo_password_here
+MONGO_PORT=27017
+MONGO_URI=mongodb://your_mongo_user:your_mongo_password_here@localhost:27017/foodie_db?authSource=admin
 
 # JWT
-JWT_SECRET=your_jwt_secret_key_here
-JWT_EXPIRATION=7d
+JWT_SECRET=your-jwt-secret-key-minimum-32-characters-long
 
 # Redis
 REDIS_HOST=localhost
@@ -309,24 +319,115 @@ CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 
 # Elasticsearch (Search Module)
+ELASTICSEARCH_PORT=9200
+ELASTICSEARCH_NODE_PORT=9300
 ELASTICSEARCH_NODE=http://localhost:9200
 
-# Application
-PORT=3000
-NODE_ENV=development
+# Frontend
+FRONTEND_URL=http://localhost:3001
 ```
 
+### Quick Start with Docker Compose
+
+The easiest way to start all required services:
+
+```bash
+# Start all infrastructure services
+docker-compose up -d
+
+# Services will be available at:
+# - PostgreSQL: localhost:5433
+# - MongoDB: localhost:27017
+# - Redis: localhost:6379
+# - Elasticsearch: localhost:9200
+# - Kibana: http://localhost:5601
+# - pgAdmin: http://localhost:5051
+# - Mongo-Express: http://localhost:8081
+# - Redis Commander: http://localhost:8082
+
+# Check services status
+docker-compose ps
+
+# View logs
+docker-compose logs -f
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (⚠️ deletes data)
+docker-compose down -v
+```
+
+### Docker Compose Services
+
+| Service | Port | Web UI | Purpose | Credentials |
+|---------|------|--------|---------|-------------|
+| **PostgreSQL** | 5433 | pgAdmin:5051 | Relational data | See .env |
+| **MongoDB** | 27017 | Mongo-Express:8081 | Document data | See .env |
+| **Redis** | 6379 | Redis Commander:8082 | Caching & sessions | Default: redis123 |
+| **Elasticsearch** | 9200 | Kibana:5601 | Full-text search | None (dev mode) |
+| **Kibana** | 5601 | http://localhost:5601 | Elasticsearch UI | - |
+
+### Web Interfaces
+
+- **Kibana** (Elasticsearch): http://localhost:5601
+- **pgAdmin** (PostgreSQL): http://localhost:5051
+- **Mongo-Express** (MongoDB): http://localhost:8081
+- **Redis Commander** (Redis): http://localhost:8082
+
 ### Prerequisites
-- Node.js 18+
-- PostgreSQL 14+
-- MongoDB 6+
-- Redis 7+
-- Elasticsearch 8+ (optional, for search features)
+- **Node.js** 18+
+- **Yarn** (package manager)
+- **Docker & Docker Compose** (for infrastructure services)
+
+All infrastructure services run inside Docker containers.
 
 ## 🚦 Getting Started
 
 ```bash
-# Install dependencies
+# Clone repository
+git clone <repository-url>
+cd foodie-connect-api
+
+# Install dependencies with Yarn
+yarn install
+
+# Start infrastructure services with Docker Compose
+docker-compose up -d
+
+# Wait for services to be healthy (check with docker-compose ps)
+
+# Run database migrations
+yarn migration:run
+
+# Start development server
+yarn start:dev
+
+# Or build and run in production
+yarn build
+yarn start:prod
+```
+
+### Development Workflow
+
+```bash
+# Run tests
+yarn test
+
+# Run E2E tests
+yarn test:e2e
+
+# Run with coverage
+yarn test:cov
+
+# Create a new migration
+yarn migration:generate -- -n MigrationName
+
+# Run migrations
+yarn migration:run
+
+# Revert migration
+yarn migration:revert
 npm install
 
 # Run database migrations
