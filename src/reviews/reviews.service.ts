@@ -125,7 +125,7 @@ export class ReviewsService {
 
   async getRestaurantReview(id: string): Promise<RestaurantReview> {
     const review = await this.restaurantReviewRepository.findOne({
-      where: { id },
+      where: { id, isDeleted: false },
       relations: ['user', 'restaurant'],
     });
 
@@ -176,7 +176,8 @@ export class ReviewsService {
       throw new BadRequestException('You can only delete your own reviews');
     }
 
-    await this.restaurantReviewRepository.remove(review);
+    review.isDeleted = true;
+    await this.restaurantReviewRepository.save(review);
   }
 
   async markRestaurantReviewHelpful(id: string): Promise<RestaurantReview> {

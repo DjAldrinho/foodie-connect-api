@@ -31,7 +31,7 @@ export class AddRestaurantReviews1715280000000 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'visitDate',
+            name: 'visit_date',
             type: 'date',
             isNullable: true,
           },
@@ -41,14 +41,19 @@ export class AddRestaurantReviews1715280000000 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'verifiedVisit',
+            name: 'verified_visit',
             type: 'boolean',
             default: false,
           },
           {
-            name: 'helpfulCount',
+            name: 'helpful_count',
             type: 'int',
             default: 0,
+          },
+          {
+            name: 'is_deleted',
+            type: 'boolean',
+            default: false,
           },
           {
             name: 'created_at',
@@ -93,7 +98,15 @@ export class AddRestaurantReviews1715280000000 implements MigrationInterface {
       'restaurant_reviews',
       new TableIndex({
         name: 'IDX_restaurant_reviews_visit_date',
-        columnNames: ['visitDate'],
+        columnNames: ['visit_date'],
+      }),
+    );
+
+    await queryRunner.createIndex(
+      'restaurant_reviews',
+      new TableIndex({
+        name: 'IDX_restaurant_reviews_is_deleted',
+        columnNames: ['is_deleted'],
       }),
     );
 

@@ -31,18 +31,22 @@ export class RestaurantReview {
   @Column({ type: 'text', nullable: true })
   comment!: string | null;
 
-  @Column({ type: 'date', nullable: true })
+  @Column({ name: 'visit_date', nullable: true })
   @Index()
   visitDate!: Date | null;
 
   @Column({ type: 'text', array: true, default: [] })
   photos!: string[];
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ name: 'verified_visit', type: 'boolean', default: false })
   verifiedVisit!: boolean;
 
-  @Column({ type: 'integer', default: 0 })
+  @Column({ name: 'helpful_count', type: 'integer', default: 0 })
   helpfulCount!: number;
+
+  @Column({ name: 'is_deleted', type: 'boolean', default: false })
+  @Index()
+  isDeleted!: boolean;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
