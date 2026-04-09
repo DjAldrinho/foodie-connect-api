@@ -121,6 +121,32 @@ Foodie Connect is a social network for food enthusiasts where users can share th
   - Bulk indexing capabilities for restaurants
   - Pagination support on all search endpoints
 
+### ✅ Phase 5: Reviews and Ratings
+- **Restaurant Reviews Module** (PostgreSQL)
+  - Rating 1-5 stars with detailed comments
+  - Visit date tracking and verified visits (check-in)
+  - Photo uploads for reviews
+  - Helpful votes system
+  - 7-day edit window with ownership validation
+  - One review per restaurant per user
+  - Rating aggregation and statistics
+  - Rating distribution (5★, 4★, 3★, 2★, 1★)
+
+- **Dish Reviews Module** (MongoDB)
+  - Rate specific dishes (linked to posts)
+  - "Me gustó / No me gustó" quick feedback
+  - Photo-based dish reviews
+  - Helpful votes for dish reviews
+  - 7-day edit window
+  - Unique constraint: one review per dish per user
+  - Rating statistics per dish
+
+- **Rating Aggregation**
+  - Average rating calculation
+  - Rating distribution charts
+  - Five-star percentage tracking
+  - Most helpful sorting
+
 ### ✅ Phase 4: Restaurant Profiles & Menu Management
 - **Restaurant Profiles Module** (PostgreSQL)
   - Restaurant profiles separate from regular users
@@ -150,6 +176,7 @@ This project uses **polyglot persistence**, choosing the right database for each
   - User accounts and profiles
   - Follow relationships (requires ACID guarantees)
   - Authentication and authorization
+  - Restaurant reviews (transactional data)
 
 - **MongoDB** for flexible, document data:
   - Posts (variable structure, nested fields)
@@ -167,10 +194,12 @@ This project uses **polyglot persistence**, choosing the right database for each
 - `users` - User accounts with roles
 - `follows` - Social graph (follower_id, following_id)
 - `restaurants` - Restaurant profiles (priceRange, cuisineType, address, hours, amenities, verified)
+- `restaurant_reviews` - Restaurant reviews with ratings, comments, helpful votes
 
 **MongoDB Collections:**
 - `posts` - User posts with images, likes, timestamps
 - `comments` - Nested comments with parentCommentId, mentions, likes
+- `dish_reviews` - Dish reviews with ratings, liked status, helpful votes
 - `notifications` - Notification history with read status
 - `menus` - Menu structure with nested categories and items
 
@@ -251,6 +280,27 @@ Once the server is running, visit:
   - Query params: `limit`
 - `GET /search/health` - Check Elasticsearch connection
 - `POST /search/index/restaurants` - Bulk index all restaurants (admin only)
+
+#### Reviews (`/reviews`)
+- `POST /reviews/restaurants` - Create a restaurant review
+  - Body: rating (1-5), comment, visitDate, photos, verifiedVisit
+- `GET /reviews/restaurants` - Get restaurant reviews (paginated)
+  - Query params: `restaurantId`, `userId`, `minRating`, `page`, `limit`, `sortBy` (recent/helpful/rating)
+- `GET /reviews/restaurants/:id` - Get restaurant review by ID
+- `GET /reviews/restaurants/:id/stats` - Get rating statistics for a restaurant
+  - Returns: averageRating, totalReviews, ratingDistribution, fiveStarPercentage
+- `PATCH /reviews/restaurants/:id` - Update restaurant review (within 7 days)
+- `DELETE /reviews/restaurants/:id` - Delete restaurant review
+- `POST /reviews/restaurants/:id/helpful` - Mark restaurant review as helpful
+- `POST /reviews/dishes` - Create a dish review
+  - Body: postId, rating (1-5), liked, comment, photos
+- `GET /reviews/dishes` - Get dish reviews (paginated)
+  - Query params: `postId`, `userId`, `minRating`, `page`, `limit`, `likedOnly`
+- `GET /reviews/dishes/:id` - Get dish review by ID
+- `GET /reviews/dishes/:id/stats` - Get rating statistics for a dish
+- `PATCH /reviews/dishes/:id` - Update dish review (within 7 days)
+- `DELETE /reviews/dishes/:id` - Delete dish review
+- `POST /reviews/dishes/:id/helpful` - Mark dish review as helpful
 
 #### Restaurants (`/restaurants`)
 - `POST /restaurants` - Create restaurant profile
@@ -509,6 +559,7 @@ src/
 ├── media/             # Media upload module (Cloudinary + Sharp)
 ├── restaurants/       # Restaurant profiles module (PostgreSQL)
 ├── menus/             # Menu management module (MongoDB)
+├── reviews/           # Reviews and ratings module (PostgreSQL + MongoDB)
 ├── common/            # Shared utilities
 │   ├── cache/         # Redis cache service
 │   ├── guards/        # Auth & roles guards
