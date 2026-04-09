@@ -10,12 +10,14 @@
 ### ✅ Completado
 
 **Fase 1: Foundation & Infrastructure**
-- Docker Compose (PostgreSQL, MongoDB, Redis, pgAdmin, Mongo-Express)
+- Docker Compose completo (PostgreSQL, MongoDB, Redis, Elasticsearch, Kibana)
+- UIs de administración: pgAdmin, Mongo-Express, Redis Commander, Kibana
 - Environment configuration con validación
 - Guards (JwtAuthGuard, RolesGuard) con jerarquía
 - Custom decorators (@Roles, @IsImageUrl)
 - Cache service con Redis
 - ValidationPipe
+- Health checks para todos los servicios
 
 **Fase 2: Authentication & Users**
 - Auth Module (register, login, JWT rotation)

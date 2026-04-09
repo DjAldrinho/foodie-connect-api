@@ -287,11 +287,17 @@ Once the server is running, visit:
 Create a `.env` file based on `.env.example`:
 
 ```env
+# =============================================================================
+# FOODIE CONNECT API - ENVIRONMENT VARIABLES
+# =============================================================================
+# Rename this file to .env and update with your actual values
+# DO NOT commit .env file to version control
+
 # Application
 PORT=3000
 NODE_ENV=development
 
-# PostgreSQL (TypeORM)
+# PostgreSQL Configuration (TypeORM)
 DB_HOST=localhost
 DB_PORT=5433
 DB_USERNAME=your_db_user
@@ -300,31 +306,48 @@ DB_DATABASE=foodie_db
 DB_SYNCHRONIZE=false
 DB_LOGGING=true
 
-# MongoDB (Mongoose)
+# MongoDB Configuration (Mongoose)
 MONGO_USER=your_mongo_user
 MONGO_PASSWORD=your_mongo_password_here
 MONGO_PORT=27017
 MONGO_URI=mongodb://your_mongo_user:your_mongo_password_here@localhost:27017/foodie_db?authSource=admin
 
-# JWT
+# JWT Configuration
+# Generate with: openssl rand -base64 32
 JWT_SECRET=your-jwt-secret-key-minimum-32-characters-long
 
-# Redis
+# pgAdmin Configuration (Optional - for database GUI)
+PGADMIN_EMAIL=your@email.com
+PGADMIN_PASSWORD=your_pgadmin_password
+PGADMIN_PORT=5051
+
+# Mongo-Express Configuration (Optional - for MongoDB GUI)
+ME_USER=admin
+ME_PASSWORD=your_mongo_express_password
+ME_PORT=8081
+
+# Redis Configuration
 REDIS_HOST=localhost
 REDIS_PORT=6379
 
-# Cloudinary (Media Upload)
+# Redis Commander Configuration
+REDIS_COMMANDER_PORT=8082
+
+# Frontend Configuration
+FRONTEND_URL=http://localhost:3001
+
+# Cloudinary Configuration
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 
-# Elasticsearch (Search Module)
+# Elasticsearch Configuration
 ELASTICSEARCH_PORT=9200
 ELASTICSEARCH_NODE_PORT=9300
 ELASTICSEARCH_NODE=http://localhost:9200
 
-# Frontend
-FRONTEND_URL=http://localhost:3001
+# Kibana Configuration
+KIBANA_PORT=5601
 ```
 
 ### Quick Start with Docker Compose
@@ -428,22 +451,6 @@ yarn migration:run
 
 # Revert migration
 yarn migration:revert
-npm install
-
-# Run database migrations
-npm run migration:run
-
-# Start development server
-npm run start:dev
-
-# Run tests
-npm test
-
-# Run E2E tests
-npm run test:e2e
-
-# Build for production
-npm run build
 ```
 
 ## 🧪 Testing
@@ -455,13 +462,13 @@ The project includes:
 
 ```bash
 # All tests
-npm test
+yarn test
 
 # E2E tests
-npm run test:e2e
+yarn test:e2e
 
 # Coverage
-npm run test:cov
+yarn test:cov
 ```
 
 ## 📖 Documentation
@@ -515,8 +522,8 @@ src/
 
 ### Production Build
 ```bash
-npm run build
-npm run start:prod
+yarn build
+yarn start:prod
 ```
 
 ### Environment Setup
@@ -525,6 +532,7 @@ Ensure all environment variables are set in production:
 - Secure database passwords
 - Configured CORS origins
 - Production-ready Redis instance
+- Production-ready Elasticsearch cluster
 
 ## 📝 License
 
