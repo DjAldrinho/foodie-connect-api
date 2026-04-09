@@ -275,6 +275,9 @@ CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 
+# Elasticsearch (Search Module)
+ELASTICSEARCH_NODE=http://localhost:9200
+
 # Application
 PORT=3000
 NODE_ENV=development
@@ -285,6 +288,7 @@ NODE_ENV=development
 - PostgreSQL 14+
 - MongoDB 6+
 - Redis 7+
+- Elasticsearch 8+ (optional, for search features)
 
 ## 🚦 Getting Started
 

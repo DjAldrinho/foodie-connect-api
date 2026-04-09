@@ -13,6 +13,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { MediaModule } from './media/media.module';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { MenusModule } from './menus/menus.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -74,6 +75,7 @@ import { MenusModule } from './menus/menus.module';
     MediaModule,
     RestaurantsModule,
     MenusModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [],
