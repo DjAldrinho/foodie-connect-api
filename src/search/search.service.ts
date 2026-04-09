@@ -31,7 +31,7 @@ export class SearchService {
         name: `${this.indexPrefix}-restaurants`,
         mappings: {
           properties: {
-            name: { type: 'text', boost: 3 },
+            name: { type: 'text' },
             description: { type: 'text' },
             cuisineType: { type: 'keyword' },
             priceRange: { type: 'integer' },
@@ -51,7 +51,7 @@ export class SearchService {
         name: `${this.indexPrefix}-posts`,
         mappings: {
           properties: {
-            content: { type: 'text', boost: 2 },
+            content: { type: 'text' },
             location: { type: 'text' },
             username: { type: 'keyword' },
             userId: { type: 'keyword' },
@@ -66,7 +66,7 @@ export class SearchService {
         name: `${this.indexPrefix}-comments`,
         mappings: {
           properties: {
-            content: { type: 'text', boost: 2 },
+            content: { type: 'text' },
             username: { type: 'keyword' },
             userId: { type: 'keyword' },
             postId: { type: 'keyword' },
