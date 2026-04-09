@@ -22,6 +22,7 @@ Foodie Connect is a social network for food enthusiasts where users can share th
 - **PostgreSQL** - Relational data (users, follows, authentication)
 - **MongoDB** - Document data (posts with flexible schemas)
 - **Redis** - Caching layer for performance optimization
+- **Elasticsearch** - Full-text search and fuzzy matching
 
 ### Security & Features
 - **JWT** - JSON Web Tokens for authentication
@@ -106,6 +107,18 @@ Foodie Connect is a social network for food enthusiasts where users can share th
   - Organized storage in folders: original/, thumbnails/, medium/, large/
   - DELETE endpoint for image removal
 
+### ✅ Phase C: Search Module
+- **Search Module** (Elasticsearch)
+  - Full-text search with fuzzy matching across restaurants, posts, and comments
+  - Restaurant search with advanced filters (cuisine type, price range, city, verification)
+  - Geo-distance queries for location-based search (lat/lon/distance)
+  - Autocomplete suggestions with phrase prefix matching
+  - Featured/sponsored restaurants endpoint
+  - Multi-index search across all content types
+  - Field boosting for relevance (name^3, content^2)
+  - Bulk indexing capabilities for restaurants
+  - Pagination support on all search endpoints
+
 ### ✅ Phase 4: Restaurant Profiles & Menu Management
 - **Restaurant Profiles Module** (PostgreSQL)
   - Restaurant profiles separate from regular users
@@ -158,6 +171,11 @@ This project uses **polyglot persistence**, choosing the right database for each
 - `comments` - Nested comments with parentCommentId, mentions, likes
 - `notifications` - Notification history with read status
 - `menus` - Menu structure with nested categories and items
+
+**Elasticsearch Indices:**
+- `foodie-connect-restaurants` - Restaurant documents (name, cuisineType, priceRange, location, ratings)
+- `foodie-connect-posts` - Post documents (content, location, username, likes, createdAt)
+- `foodie-connect-comments` - Comment documents (content, username, mentions, createdAt)
 
 ## 📚 API Documentation
 
@@ -216,6 +234,21 @@ Once the server is running, visit:
   - Generates: thumbnail, medium, large sizes
   - Returns: URLs for all sizes, metadata, publicId
   - Supported formats: jpeg, png, webp (max 10MB)
+
+#### Search (`/search`)
+- `GET /search/restaurants` - Search restaurants with full-text and filters
+  - Query params: `q`, `cuisineType`, `city`, `priceRange`, `verified`, `lat`, `lon`, `distance`, `page`, `limit`
+  - Features: fuzzy search, geo-distance queries, relevance scoring
+- `GET /search/posts` - Search posts by content
+  - Query params: `q`, `userId`, `page`, `limit`
+- `GET /search/comments` - Search comments by content
+  - Query params: `q`, `postId`, `page`, `limit`
+- `GET /search/autocomplete` - Get autocomplete suggestions
+  - Query params: `q`, `type` (restaurants/all), `limit`
+- `GET /search/featured` - Get featured/sponsored restaurants
+  - Query params: `limit`
+- `GET /search/health` - Check Elasticsearch connection
+- `POST /search/index/restaurants` - Bulk index all restaurants (admin only)
 
 #### Restaurants (`/restaurants`)
 - `POST /restaurants` - Create restaurant profile
