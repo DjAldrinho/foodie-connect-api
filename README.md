@@ -223,124 +223,123 @@ This project uses **polyglot persistence**, choosing the right database for each
 ## 📚 API Documentation
 
 Once the server is running, visit:
-- **Swagger UI**: http://localhost:3000/api
-- **API JSON**: http://localhost:3000/api-json
+- **Swagger UI**: http://localhost:3000/api/docs
+- **API JSON**: http://localhost:3000/api/docs-json
 
 ### Main Endpoints
 
-#### Authentication (`/auth`)
-- `POST /auth/register` - Register new user
-- `POST /auth/login` - User login
-- `POST /auth/rotate-secret` - Rotate JWT secret (admin only)
-- `GET /auth/profile` - Get current user profile
+#### Authentication (`/api/auth`)
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User login
+- `POST /api/auth/rotate-secret` - Rotate JWT secret (admin only)
+- `GET /api/auth/profile` - Get current user profile
 
-#### Users (`/users`)
-- `GET /users` - List all users (admin)
-- `GET /users/:id` - Get user by ID
-- `PATCH /users/:id` - Update user (self or admin)
-- `DELETE /users/:id` - Soft delete user (admin)
+#### Users (`/api/users`)
+- `GET /api/users` - List all users (admin)
+- `GET /api/users/:id` - Get user by ID
+- `PATCH /api/users/:id` - Update user (self or admin)
+- `DELETE /api/users/:id` - Soft delete user (admin)
 
-#### Follows (`/follows`)
-- `POST /follows/:userId` - Follow a user
-- `DELETE /follows/:userId` - Unfollow a user
-- `GET /follows/following` - Get following list (paginated)
-- `GET /follows/followers` - Get followers list (paginated)
+#### Follows (`/api/follows`)
+- `POST /api/follows/:userId` - Follow a user
+- `DELETE /api/follows/:userId` - Unfollow a user
+- `GET /api/follows/following` - Get following list (paginated)
+- `GET /api/follows/followers` - Get followers list (paginated)
 
-#### Posts (`/posts`)
-- `POST /posts` - Create a new post
-- `GET /posts/:id` - Get post by ID
-- `GET /posts/user/:userId` - Get posts by user
-- `DELETE /posts/:id` - Delete own post
-- `POST /posts/:id/like` - Like a post
+#### Posts (`/api/posts`)
+- `POST /api/posts` - Create a new post
+- `GET /api/posts/:id` - Get post by ID
+- `GET /api/posts/user/:userId` - Get posts by user
+- `DELETE /api/posts/:id` - Delete own post
+- `POST /api/posts/:id/like` - Like a post
 
-#### Feed (`/feed`)
-- `GET /feed` - Get personalized feed from followed users
+#### Feed (`/api/feed`)
+- `GET /api/feed` - Get personalized feed from followed users
   - Query params: `page`, `limit`, `startDate`, `endDate`
 
-#### Comments (`/comments`)
-- `POST /comments` - Create a new comment
-- `GET /comments/post/:postId` - Get comments for a post (paginated)
-- `PATCH /comments/:id` - Edit own comment (within 5 minutes)
-- `DELETE /comments/:id` - Soft delete own comment
-- `POST /comments/:id/like` - Like/unlike a comment
-- `GET /comments/:id/replies` - Get replies to a comment (nested)
+#### Comments (`/api/comments`)
+- `POST /api/comments` - Create a new comment
+- `GET /api/comments/post/:postId` - Get comments for a post (paginated)
+- `PATCH /api/comments/:id` - Edit own comment (within 5 minutes)
+- `DELETE /api/comments/:id` - Soft delete own comment
+- `POST /api/comments/:id/like` - Like/unlike a comment
+- `GET /api/comments/:id/replies` - Get replies to a comment (nested)
 
-#### Notifications (`/notifications`)
-- `GET /notifications` - Get user notifications (paginated)
-- `GET /notifications/unread-count` - Get unread notifications count
-- `PATCH /notifications/:id/read` - Mark notification as read
-- `PATCH /notifications/read-all` - Mark all notifications as read
-- `DELETE /notifications/:id` - Delete notification
+#### Notifications (`/api/notifications`)
+- `GET /api/notifications` - Get user notifications (paginated)
+- `GET /api/notifications/unread-count` - Get unread notifications count
+- `PATCH /api/notifications/:id/read` - Mark notification as read
+- `PATCH /api/notifications/read-all` - Mark all notifications as read
+- `DELETE /api/notifications/:id` - Delete notification
 
-#### Media (`/media`)
-- `POST /media/upload` - Upload image with automatic optimization
+#### Media (`/api/media`)
+- `POST /api/media/upload` - Upload image with automatic optimization
   - Generates: thumbnail, medium, large sizes
   - Returns: URLs for all sizes, metadata, publicId
   - Supported formats: jpeg, png, webp (max 10MB)
 
-#### Search (`/search`)
-- `GET /search/restaurants` - Search restaurants with full-text and filters
+#### Search (`/api/search`)
+- `GET /api/search/restaurants` - Search restaurants with full-text and filters
   - Query params: `q`, `cuisineType`, `city`, `priceRange`, `verified`, `lat`, `lon`, `distance`, `page`, `limit`
   - Features: fuzzy search, geo-distance queries, relevance scoring
-- `GET /search/posts` - Search posts by content
+- `GET /api/search/posts` - Search posts by content
   - Query params: `q`, `userId`, `page`, `limit`
-- `GET /search/comments` - Search comments by content
+- `GET /api/search/comments` - Search comments by content
   - Query params: `q`, `postId`, `page`, `limit`
-- `GET /search/autocomplete` - Get autocomplete suggestions
+- `GET /api/search/autocomplete` - Get autocomplete suggestions
   - Query params: `q`, `type` (restaurants/all), `limit`
-- `GET /search/featured` - Get featured/sponsored restaurants
+- `GET /api/search/featured` - Get featured/sponsored restaurants
   - Query params: `limit`
-- `GET /search/health` - Check Elasticsearch connection
-- `POST /search/index/restaurants` - Bulk index all restaurants (admin only)
+- `GET /api/search/health` - Check Elasticsearch connection
+- `POST /api/search/index/restaurants` - Bulk index all restaurants (admin only)
 
-#### Reviews (`/reviews`)
-- `POST /reviews/restaurants` - Create a restaurant review
+#### Reviews (`/api/reviews`)
+- `POST /api/reviews/restaurants` - Create a restaurant review
   - Body: rating (1-5), comment, visitDate, photos, verifiedVisit
-- `GET /reviews/restaurants` - Get restaurant reviews (paginated)
+- `GET /api/reviews/restaurants` - Get restaurant reviews (paginated)
   - Query params: `restaurantId`, `userId`, `minRating`, `page`, `limit`, `sortBy` (recent/helpful/rating)
-- `GET /reviews/restaurants/:id` - Get restaurant review by ID
-- `GET /reviews/restaurants/:id/stats` - Get rating statistics for a restaurant
+- `GET /api/reviews/restaurants/:id` - Get restaurant review by ID
+- `GET /api/reviews/restaurants/:id/stats` - Get rating statistics for a restaurant
   - Returns: averageRating, totalReviews, ratingDistribution, fiveStarPercentage
-- `PATCH /reviews/restaurants/:id` - Update restaurant review (within 7 days)
-- `DELETE /reviews/restaurants/:id` - Delete restaurant review
-- `POST /reviews/restaurants/:id/helpful` - Mark restaurant review as helpful
-- `POST /reviews/dishes` - Create a dish review
+- `PATCH /api/reviews/restaurants/:id` - Update restaurant review (within 7 days)
+- `DELETE /api/reviews/restaurants/:id` - Delete restaurant review
+- `POST /api/reviews/restaurants/:id/helpful` - Mark restaurant review as helpful
+- `POST /api/reviews/dishes` - Create a dish review
   - Body: postId, rating (1-5), liked, comment, photos
-- `GET /reviews/dishes` - Get dish reviews (paginated)
+- `GET /api/reviews/dishes` - Get dish reviews (paginated)
   - Query params: `postId`, `userId`, `minRating`, `page`, `limit`, `likedOnly`
-- `GET /reviews/dishes/:id` - Get dish review by ID
-- `GET /reviews/dishes/:id/stats` - Get rating statistics for a dish
-- `PATCH /reviews/dishes/:id` - Update dish review (within 7 days)
-- `DELETE /reviews/dishes/:id` - Delete dish review
-- `POST /reviews/dishes/:id/helpful` - Mark dish review as helpful
+- `GET /api/reviews/dishes/:id` - Get dish review by ID
+- `GET /api/reviews/dishes/:id/stats` - Get rating statistics for a dish
+- `PATCH /api/reviews/dishes/:id` - Update dish review (within 7 days)
+- `DELETE /api/reviews/dishes/:id` - Delete dish review
+- `POST /api/reviews/dishes/:id/helpful` - Mark dish review as helpful
 
-#### Restaurants (`/restaurants`)
-- `POST /restaurants` - Create restaurant profile
-- `GET /restaurants` - List all restaurants with filters
+#### Restaurants (`/api/restaurants`)
+- `POST /api/restaurants` - Create restaurant profile
+- `GET /api/restaurants` - List all restaurants with filters
   - Query params: `cuisineType`, `priceRange`, `city`, `verified`
-- `GET /restaurants/my-restaurant` - Get current user restaurant
-- `GET /restaurants/:id` - Get restaurant by ID
-- `PATCH /restaurants/:id` - Update restaurant information
-- `PATCH /restaurants/:id/verify` - Verify restaurant (admin only)
-- `PATCH /restaurants/:id/photos` - Add photo to gallery
-- `DELETE /restaurants/:id/photos/:photoUrl` - Remove photo from gallery
-- `PATCH /restaurants/:id/deactivate` - Deactivate restaurant (soft delete)
-- `PATCH /restaurants/:id/activate` - Activate restaurant
+- `GET /api/restaurants/my-restaurant` - Get current user restaurant
+- `GET /api/restaurants/:id` - Get restaurant by ID
+- `PATCH /api/restaurants/:id` - Update restaurant information
+- `PATCH /api/restaurants/:id/verify` - Verify restaurant (admin only)
+- `PATCH /api/restaurants/:id/photos` - Add photo to gallery
+- `DELETE /api/restaurants/:id/photos/:photoUrl` - Remove photo from gallery
+- `PATCH /api/restaurants/:id/deactivate` - Deactivate restaurant (soft delete)
+- `PATCH /api/restaurants/:id/activate` - Activate restaurant
 
-#### Menus (`/menus`)
-- `POST /menus` - Create or update menu for restaurant
-- `GET /menus/restaurant/:restaurantId` - Get menu by restaurant
-- `PATCH /menus/:id` - Update menu
-- `POST /menus/:id/categories` - Add category to menu
-- `PATCH /menus/:id/categories/:categoryName` - Remove category
-- `POST /menus/:id/categories/:categoryName/items` - Add item to category
-- `PATCH /menus/:id/categories/:categoryName/items/:itemName` - Remove item
-- `PATCH /menus/:id/categories/:categoryName/items/:itemName/availability` - Toggle item availability
+#### Menus (`/api/menus`)
+- `POST /api/menus` - Create or update menu for restaurant
+- `GET /api/menus/restaurant/:restaurantId` - Get menu by restaurant
+- `PATCH /api/menus/:id` - Update menu
+- `POST /api/menus/:id/categories` - Add category to menu
+- `PATCH /api/menus/:id/categories/:categoryName` - Remove category
+- `POST /api/menus/:id/categories/:categoryName/items` - Add item to category
+- `PATCH /api/menus/:id/categories/:categoryName/items/:itemName` - Remove item
+- `PATCH /api/menus/:id/categories/:categoryName/items/:itemName/availability` - Toggle item availability
 
-#### WebSocket Events
-- `joinNotifications` - Join user's notification room
-- `leaveNotifications` - Leave notification room
-- `markAsRead` - Mark notification as read via WebSocket
+#### WebSocket Events (`/api/notifications`)
+- Connection: `http://localhost:3000/notifications` (Socket.io client)
+- Events: `joinNotifications`, `leaveNotifications`, `markAsRead`
 - Real-time updates: `notification-updated`, `unread-count`
 
 ## 🔧 Configuration
