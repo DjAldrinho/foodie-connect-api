@@ -1,15 +1,15 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  JoinColumn,
+  Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
 import { Restaurant } from '../../restaurants/entities/restaurant.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('restaurant_reviews')
 export class RestaurantReview {
@@ -31,7 +31,7 @@ export class RestaurantReview {
   @Column({ type: 'text', nullable: true })
   comment!: string | null;
 
-  @Column({ name: 'visit_date', nullable: true })
+  @Column({ name: 'visit_date', type: 'date', nullable: true })
   @Index()
   visitDate!: Date | null;
 

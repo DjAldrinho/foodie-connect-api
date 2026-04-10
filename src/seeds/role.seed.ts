@@ -9,6 +9,7 @@ export async function seedRoles(dataSource: DataSource) {
     { name: RoleName.USER },
     { name: RoleName.RESTAURANT },
     { name: RoleName.ADMIN },
+    { name: RoleName.SUPER_ADMIN },
   ];
 
   for (const roleData of roles) {

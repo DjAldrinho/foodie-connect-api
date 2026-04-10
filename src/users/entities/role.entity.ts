@@ -10,6 +10,7 @@ export enum RoleName {
   USER = 'USER',
   RESTAURANT = 'RESTAURANT',
   ADMIN = 'ADMIN',
+  SUPER_ADMIN = 'SUPER_ADMIN',
 }
 
 @Entity('roles')
