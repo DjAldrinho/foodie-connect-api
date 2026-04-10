@@ -15,6 +15,12 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
 import { MenusModule } from './menus/menus.module';
 import { SearchModule } from './search/search.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { User } from './users/entities/user.entity';
+import { Role } from './users/entities/role.entity';
+import { Follow } from './follows/entities/follow.entity';
+import { Restaurant } from './restaurants/entities/restaurant.entity';
+import { RestaurantReview } from './reviews/entities/restaurant-review.entity';
+import { Secret } from './auth/entities/secret.entity';
 
 @Module({
   imports: [
@@ -57,7 +63,7 @@ import { ReviewsModule } from './reviews/reviews.module';
       username: process.env.DB_USERNAME || 'foodie_user',
       password: process.env.DB_PASSWORD || 'foodie_pass',
       database: process.env.DB_DATABASE || 'foodie_db',
-      entities: [__dirname + '/**/**/{users,follows,auth,restaurants,reviews}.entity{.ts,.js}'],
+      entities: [User, Role, Follow, Restaurant, RestaurantReview, Secret],
       synchronize: false,
       logging: process.env.NODE_ENV === 'development',
     }),
