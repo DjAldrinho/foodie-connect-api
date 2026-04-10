@@ -39,7 +39,7 @@ Foodie Connect is a social network for food enthusiasts where users can share th
 - **Jest** - Testing framework
 - **ESLint** - Code linting with strict TypeScript rules
 - **Prettier** - Code formatting
-- **Yarn** - Package manager
+- **NPM** - Package manager
 - **Docker Compose** - Infrastructure orchestration
 
 ## 📋 Implemented Features
@@ -166,6 +166,18 @@ Foodie Connect is a social network for food enthusiasts where users can share th
   - Availability toggle per item
   - Add/remove categories and items
   - Integration with restaurant profiles
+
+### ✅ Database Seeders
+- **Role Seeder**
+  - Creates base roles: USER, RESTAURANT, ADMIN, SUPER_ADMIN
+  - Idempotent operation (skips existing roles)
+
+- **Super Admin Seeder**
+  - Creates super administrator user from environment variables
+  - Reads credentials from .env: SUPERADMIN_EMAIL, SUPERADMIN_PASSWORD, SUPERADMIN_FULLNAME
+  - Auto-assigns SUPER_ADMIN role
+  - Updates existing user to SUPER_ADMIN if email already exists
+  - Password hashing with bcrypt (10 salt rounds)
 
 ## 🏗 Architecture
 
@@ -398,6 +410,11 @@ ELASTICSEARCH_NODE=http://localhost:9200
 
 # Kibana Configuration
 KIBANA_PORT=5601
+
+# Super Admin Configuration (for database seeders)
+SUPERADMIN_EMAIL=admin@foodieconnect.com
+SUPERADMIN_PASSWORD=YourSecurePassword123!
+SUPERADMIN_FULLNAME=Super Admin
 ```
 
 ### Quick Start with Docker Compose
@@ -450,7 +467,7 @@ docker-compose down -v
 
 ### Prerequisites
 - **Node.js** 18+
-- **Yarn** (package manager)
+- **NPM** (package manager)
 - **Docker & Docker Compose** (for infrastructure services)
 
 All infrastructure services run inside Docker containers.
@@ -462,8 +479,8 @@ All infrastructure services run inside Docker containers.
 git clone <repository-url>
 cd foodie-connect-api
 
-# Install dependencies with Yarn
-yarn install
+# Install dependencies
+npm install
 
 # Start infrastructure services with Docker Compose
 docker-compose up -d
@@ -471,36 +488,39 @@ docker-compose up -d
 # Wait for services to be healthy (check with docker-compose ps)
 
 # Run database migrations
-yarn migration:run
+npm run migration:run
+
+# Run database seeders (creates roles and super admin)
+npm run seed
 
 # Start development server
-yarn start:dev
+npm run start:dev
 
 # Or build and run in production
-yarn build
-yarn start:prod
+npm run build
+npm run start:prod
 ```
 
 ### Development Workflow
 
 ```bash
 # Run tests
-yarn test
+npm test
 
 # Run E2E tests
-yarn test:e2e
+npm run test:e2e
 
 # Run with coverage
-yarn test:cov
+npm run test:cov
 
 # Create a new migration
-yarn migration:generate -- -n MigrationName
+npm run migration:generate -- -n MigrationName
 
 # Run migrations
-yarn migration:run
+npm run migration:run
 
 # Revert migration
-yarn migration:revert
+npm run migration:revert
 ```
 
 ## 🧪 Testing
@@ -512,13 +532,13 @@ The project includes:
 
 ```bash
 # All tests
-yarn test
+npm test
 
 # E2E tests
-yarn test:e2e
+npm run test:e2e
 
 # Coverage
-yarn test:cov
+npm run test:cov
 ```
 
 ## 📖 Documentation
@@ -573,8 +593,8 @@ src/
 
 ### Production Build
 ```bash
-yarn build
-yarn start:prod
+npm run build
+npm run start:prod
 ```
 
 ### Environment Setup
